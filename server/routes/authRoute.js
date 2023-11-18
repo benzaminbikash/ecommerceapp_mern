@@ -6,6 +6,7 @@ const {
   loginAuth,
   editProfilePicture,
   getUserInfo,
+  oldwithNewPassword,
 } = require("../controllers/authController");
 const { authMiddleware } = require("../middleware/authMiddleware");
 const { uploadImage } = require("../middleware/uploadImage");
@@ -20,5 +21,6 @@ router.put(
   editProfilePicture
 );
 router.get("/singleinfo", authMiddleware, getUserInfo);
+router.put("/oldpasswordchange", authMiddleware, oldwithNewPassword);
 
 module.exports = router;

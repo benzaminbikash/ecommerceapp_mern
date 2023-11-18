@@ -6,7 +6,7 @@ import {
   StatusBar,
   ScrollView,
 } from "react-native";
-import React, { useCallback } from "react";
+import React from "react";
 import CustomHeader from "../components/CustomHeader";
 import { useSelector } from "react-redux";
 import CartList from "../components/CartList";
@@ -21,7 +21,6 @@ const Cart = () => {
   const calculatePrice = state.map((item) => {
     totalPrice += item.qty * item.price;
   });
-
   return (
     <View style={styles.main}>
       <CustomHeader title="My Cart" />

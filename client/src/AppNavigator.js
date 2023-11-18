@@ -14,6 +14,9 @@ import Notification from "./screen/Notification";
 import { Entypo } from "@expo/vector-icons";
 import ProductDetail from "./screen/ProductDetail";
 import CheckOut from "./screen/CheckOut";
+import Address from "./screen/Address";
+import Order from "./screen/Order";
+import CategoryDetail from "./screen/CategoryDetail";
 
 const Stack = createNativeStackNavigator();
 const Bottom = createBottomTabNavigator();
@@ -70,6 +73,9 @@ const AppNavigator = () => {
         <Stack.Screen name="main" component={Main} />
         <Stack.Screen name="detail" component={ProductDetail} />
         <Stack.Screen name="check" component={CheckOut} />
+        <Stack.Screen name="address" component={Address} />
+        <Stack.Screen name="order" component={Order} />
+        <Stack.Screen name="category" component={CategoryDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

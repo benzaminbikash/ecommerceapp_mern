@@ -22,7 +22,7 @@ const CheckOut = () => {
   const { item, totalPrice } = route.params;
   const cashOnDelivery = () => {
     Alert.alert("Order Successfully!");
-    navigation.navigate("main");
+    navigation.replace("order");
     dispatch(clearCart());
   };
   const onlinePayment = () => {
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     shadowColor: "black",
-    // backgroundColor: "grey",
     paddingVertical: 30,
   },
   choosemethod: {

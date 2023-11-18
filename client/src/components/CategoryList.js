@@ -1,10 +1,14 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const CategoryList = ({ item }) => {
+  const navigation = useNavigation();
   return (
     <View key={item._id} style={styles.main}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("category", { item: item })}
+      >
         <Image source={{ uri: item.image }} style={styles.image} />
       </TouchableOpacity>
       <Text style={styles.text}>{item.title}</Text>

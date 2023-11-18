@@ -25,7 +25,19 @@ export const userApi = createApi({
         },
       }),
     }),
+    //get user info
+    getUser: builder.query({
+      query: (token) => ({
+        url: "singleinfo",
+        method: "get",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useRegistrationMutation, useLoginMutation } = userApi;
+export const { useRegistrationMutation, useLoginMutation, useGetUserQuery } =
+  userApi;

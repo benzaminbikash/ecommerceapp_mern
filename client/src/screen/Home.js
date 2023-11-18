@@ -9,8 +9,10 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
+  TouchableOpacity,
+  Modal,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import SearchBox from "../components/SearchBox";
 import Carousel from "react-native-snap-carousel";
 import { SIZE, images } from "../constants/constants";
@@ -18,10 +20,15 @@ import { useGetCategoryListQuery } from "../redux/Api/categoryApi";
 import CategoryList from "../components/CategoryList";
 import { useGetProductListQuery } from "../redux/Api/productApi";
 import ProductList from "../components/ProductList";
+import { Ionicons } from "@expo/vector-icons";
+import CustomModal from "../components/CustomModal";
 const Home = () => {
   const { data: categoryData, isLoading } = useGetCategoryListQuery();
   const { data: productData } = useGetProductListQuery();
-
+  const [isVisible, setIsVisible] = useState(false);
+  const handleVisible = () => {
+    setIsVisible(!isVisible);
+  };
   return isLoading ? (
     <View style={styles.loading}>
       <ActivityIndicator size={35} color="white" />
@@ -57,7 +64,17 @@ const Home = () => {
           </ScrollView>
         </View>
         {/* product */}
-        <Text style={styles.title}>Products</Text>
+        <View style={styles.filterbox}>
+          <Text style={styles.title}>Products</Text>
+          <View>
+            <TouchableOpacity onPress={handleVisible}>
+              <Ionicons name="filter" size={20} color="white" />
+            </TouchableOpacity>
+            <Modal transparent animationType="slide" visible={isVisible}>
+              <CustomModal close={handleVisible} />
+            </Modal>
+          </View>
+        </View>
         <View style={styles.productlist}>
           {productData?.data.map((item) => {
             return <ProductList item={item} />;
@@ -99,5 +116,11 @@ const styles = StyleSheet.create({
   productlist: {
     flexDirection: "row",
     flexWrap: "wrap",
+  },
+  filterbox: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginRight: 10,
+    alignItems: "center",
   },
 });

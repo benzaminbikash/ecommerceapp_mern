@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  StatusBar,
+} from "react-native";
 import React from "react";
 import { Formik } from "formik";
 import CustomInput from "../../components/CustomInput";
@@ -59,7 +66,8 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: "black",
-    padding: 10,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingHorizontal: 10,
   },
   signtext: {
     marginTop: 30,

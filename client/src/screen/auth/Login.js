@@ -16,10 +16,13 @@ import { useNavigation } from "@react-navigation/native";
 import { useLoginMutation } from "../../redux/Api/userApi";
 import { TOAST } from "../../constants/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../redux/slice/tokenSlice";
 const Login = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [loginApi] = useLoginMutation();
+  const dispatch = useDispatch();
   const handleLogin = async (v, a) => {
     setLoading(true);
     const response = await loginApi({
@@ -37,6 +40,7 @@ const Login = () => {
       TOAST(response.data.message);
       navigation.replace("main");
       await AsyncStorage.setItem("@token", response.data.token);
+      dispatch(setToken(response.data.token));
     }
   };
 

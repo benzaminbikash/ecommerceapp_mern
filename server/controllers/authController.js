@@ -1,4 +1,3 @@
-const { userInfo } = require("os");
 const authModel = require("../models/authModel");
 const { cloudinaryImage } = require("../utils/CloundinaryImage");
 const { asyncHandler } = require("../utils/asyncHandler");
@@ -77,21 +76,42 @@ const loginAuth = asyncHandler(async (req, res) => {
 
 const getUserInfo = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  const user = await authModel.findById(_id).select("-password");
+  const user = await authModel
+    .findById(_id)
+    .select("-password -otp -otp_verify -verified");
   res.status(200).json({ status: true, message: "Your Data", user });
 });
 
 // edit profile picture
 const editProfilePicture = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
   const uploadCloud = (p) => cloudinaryImage(p);
   const file = req.file.path;
   const upload = await uploadCloud(file);
   fs.unlinkSync(file);
-  const data = await authModel.findByIdAndUpdate(_id, { image: upload });
+  await authModel.findByIdAndUpdate(req.user._id, { image: upload });
   res
     .status(200)
-    .json({ status: true, message: "Profile Update Successfully", data });
+    .json({ status: true, message: "Profile Update Successfully" });
+});
+
+// oldPassword and newPasword
+const oldwithNewPassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword)
+    throw new Error("Old Password and new Password must required");
+  const user = await authModel.findById(req.user._id);
+  const match = await user.isPasswordMatch(oldPassword);
+  if (!match) throw new Error("Old password is not correct.");
+  if (newPassword === oldPassword)
+    throw new Error(
+      "Please create new password old and new password are same."
+    );
+  user.password = newPassword;
+  await user.save();
+  res.status(200).json({
+    status: true,
+    message: "Password Change Successfully!",
+  });
 });
 
 module.exports = {
@@ -100,4 +120,5 @@ module.exports = {
   verifyOtp,
   editProfilePicture,
   getUserInfo,
+  oldwithNewPassword,
 };
